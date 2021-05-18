@@ -1,58 +1,68 @@
-import groovy.json.JsonSlurper
-
-def getDockerImages() {
-    return ["choice1", "choice2", "choice3","choice4"];
-}
-
-def getDockerTags() {
-     def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "https://api.npoint.io/f795a5fc4e4492853a23"
-     println('Status: '+response.status)
-     println('Response: '+response.content)
-    
-     def other_response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'GET', url: "https://api.npoint.io/94c7dfacc8e334149afb"
-    
-     def object = readJSON text: response.content
-     def other_object = readJSON text: other_response.content
-    
-     return other_object.results
- }
-
 pipeline {
-    agent {node {label 'master'}}
-    parameters {
+  agent any
+  options {
+    buildDiscarder(
+      logRotator(daysToKeepStr: '5', numToKeepStr: '5')
+    )
+    disableConcurrentBuilds()
+  }
 
-        extendedChoice( 
-            name: 'TagName', 
-            defaultValue: '', 
-            description: 'tag name', 
+parameters {
+        extendedChoice(
+            name: 'TagName',
+            defaultValue: '',
+            description: 'tag name',
             type: 'PT_SINGLE_SELECT',
-            groovyScript: """def gettags = "choice1, choice2, choice3, choice4";
-               return gettags
-                          """,)
-    }
-    stages {
-        stage("Gather Deployment Parameters") {
-            steps {
-                timeout(time: 30, unit: 'SECONDS') {
-                    script {
-                        // Show the select input modal
-                       // def INPUT_PARAMS = input message: 'Please Provide Parameters', ok: 'Next',
-                       //                 parameters: [
-                       //                 choice(name: 'IMAGE_TAG', choices: getDockerImages(), description: 'Available Docker Images')]
-                       // env.IMAGE_TAG = INPUT_PARAMS
-                       def gettags = sh(script:"""curl https://api.npoint.io/f795a5fc4e4492853a23 | sed 's#{"results":"##g' | sed 's#"}##g'""", returnStdout:true).trim()
-                           print gettags
-                    }
-                }
-            }
-        }
-        stage("Use Deployment Parameters") {
-         steps {
-                script {
-                    echo "All parameters have been set as Environment Variables"
-                    echo "Selected Tag: ${env.IMAGE_TAG}"
-                }
-         }
-        }
-    }
+            groovyScript: '''
+                            def get = new URL("https://api.npoint.io/94c7dfacc8e334149afb").openConnection();
+                            def getRC = get.getResponseCode();
+
+                            def slurper = new groovy.json.JsonSlurper()
+                            def finalResult = "AB,CD,EF"
+                            if(getRC.equals(200)) {
+                                def response = get.getInputStream().getText();
+                                def parsedResponse = slurper.parseText(response)
+                                println(parsedResponse.results);
+                                finalResult = parsedResponse.results
+                            }
+
+                            return finalResult
+                          '''
+        )
 }
+
+  environment {
+      def GENERATED_BUILD_TAG = ''
+  }
+
+  stages {
+    stage('parameterBuild') {
+      when { expression { params.SkipRun } }
+      steps {
+        script {
+          echo 'Setting job parameters'
+        }
+      }
+    }
+    stage('Tag Name ') {
+      when { expression { !params.SkipRun } }
+      stages {
+        stage('test') {
+          steps {
+            script {
+              echo "running on tag ${TagName}"
+
+            }
+          }
+        }
+      }//run stages
+      post {
+        success {
+          script {
+            env.GENERATED_BUILD_TAG = build_tag
+          }
+        }
+      }
+    }//stage run
+  }//job stages
+}//pipeline
