@@ -27,7 +27,7 @@ pipeline {
             description: 'tag name', 
             type: 'PT_SINGLE_SELECT',
             multiSelectDelimiter: '\\n',
-            groovyScript: """def gettags =("https://api.npoint.io/f795a5fc4e4492853a23 | sed 's#{"results":"##g' | sed 's#"}##g'").execute()
+            groovyScript: """def gettags = "choice1, choice2, choice3, choice4, choice5, choice6";
                return gettags
                           """,)
     }
