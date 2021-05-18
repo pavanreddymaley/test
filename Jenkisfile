@@ -28,7 +28,6 @@ parameters {
 
   stages {
     stage('parameterBuild') {
-      when { expression { params.SkipRun } }
       steps {
         script {
           def values = getdockertags()
@@ -37,7 +36,6 @@ parameters {
       }
     }
     stage('Tag Name ') {
-      when { expression { !params.SkipRun } }
       stages {
         stage('test') {
           steps {
