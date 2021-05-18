@@ -41,7 +41,7 @@ pipeline {
                        //                 choice(name: 'IMAGE_TAG', choices: getDockerImages(), description: 'Available Docker Images')]
                        // env.IMAGE_TAG = INPUT_PARAMS
                        def gettags = sh(script:"""curl https://api.npoint.io/f795a5fc4e4492853a23 | sed 's#{"results":"##g' | sed 's#"}##g'""", returnStdout:true).trim()
-                           return gettags
+                           print gettags
                     }
                 }
             }
