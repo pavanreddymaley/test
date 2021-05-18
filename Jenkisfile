@@ -25,7 +25,8 @@ pipeline {
             name: 'TagName', 
             defaultValue: '', 
             description: 'tag name', 
-            type: 'PT_SINGLE_SELECT', 
+            type: 'PT_SINGLE_SELECT',
+            multiSelectDelimiter: '\\n',
             groovyScript: """def gettags = sh(script:"""curl https://api.npoint.io/f795a5fc4e4492853a23 | sed 's#{"results":"##g' | sed 's#"}##g'""", returnStdout:true).trim()
                return gettags
                           """,)
