@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper
 
 def getDockerImages() {
-    return ["choice1", "choice2", "choice3","choice4","choice5","choice6"];
+    return ["choice1", "choice2", "choice3","choice4"];
 }
 
 def getDockerTags() {
@@ -26,8 +26,7 @@ pipeline {
             defaultValue: '', 
             description: 'tag name', 
             type: 'PT_SINGLE_SELECT',
-            multiSelectDelimiter: '\\n',
-            groovyScript: """def gettags = "choice1, choice2, choice3, choice4, choice5, choice6";
+            groovyScript: """def gettags = "choice1, choice2, choice3, choice4";
                return gettags
                           """,)
     }
