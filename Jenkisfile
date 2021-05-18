@@ -1,4 +1,4 @@
-@library "my-shared-library@$BRANCH_NAME"
+@library "demo@$BRANCH_NAME"
 
 pipeline {
   agent any
