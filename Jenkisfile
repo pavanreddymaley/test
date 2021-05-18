@@ -1,4 +1,4 @@
-@library "demo@main"
+@Library('demo') _
 
 pipeline {
   agent any
