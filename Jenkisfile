@@ -26,8 +26,8 @@ pipeline {
             defaultValue: '', 
             description: 'tag name', 
             type: 'PT_SINGLE_SELECT', 
-            groovyScript: """def gettags = ("curl https://api.npoint.io/f795a5fc4e4492853a23 | jq .results --raw-output").execute()
-               return gettags.result
+            groovyScript: """def gettags = ('''curl https://api.npoint.io/f795a5fc4e4492853a23 | sed 's#{"results":"##g' | sed 's#"}##g'''').execute()
+               return gettags
                           """,)
     }
     stages {
