@@ -31,7 +31,8 @@ parameters {
       when { expression { params.SkipRun } }
       steps {
         script {
-          echo 'Setting job parameters'
+          def values = getdockertags()
+          print values
         }
       }
     }
