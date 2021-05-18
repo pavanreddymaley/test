@@ -25,7 +25,6 @@ parameters {
   environment {
       def GENERATED_BUILD_TAG = ''
   }
-
   stages {
     stage('parameterBuild') {
       steps {
@@ -35,24 +34,5 @@ parameters {
         }
       }
     }
-    stage('Tag Name ') {
-      stages {
-        stage('test') {
-          steps {
-            script {
-              echo "running on tag ${TagName}"
-
-            }
-          }
-        }
-      }//run stages
-      post {
-        success {
-          script {
-            env.GENERATED_BUILD_TAG = build_tag
-          }
-        }
-      }
-    }//stage run
   }//job stages
 }//pipeline
