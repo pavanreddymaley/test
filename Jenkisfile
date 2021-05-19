@@ -19,6 +19,9 @@ parameters {
                 getdockertags()
                 '''
         )
+        parameters {
+  choice choices: getdockertags(), description: '', name: 'test'
+
 }
 
   environment {
