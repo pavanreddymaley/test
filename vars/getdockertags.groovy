@@ -1,3 +1,4 @@
+import groovy.json.JsonSlurper
 def call() {
     def get = new URL("https://api.npoint.io/94c7dfacc8e334149afb").openConnection();
     def getRC = get.getResponseCode();
