@@ -29,9 +29,7 @@ parameters {
             defaultValue: '',
             description: 'tag name',
             type: 'PT_SINGLE_SELECT',
-            groovyScript: '''
-                            return foo()
-                          '''
+            groovyScriptFile: '''getdockertags.groovy'''
         )
 }
 
