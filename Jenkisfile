@@ -32,7 +32,6 @@ parameters {
       steps {
         script {
           def values = getdockertags()
-          print values
         }
       }
     }
