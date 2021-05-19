@@ -16,10 +16,9 @@ parameters {
             description: 'tag name',
             type: 'PT_SINGLE_SELECT',
             groovyScript: '''
-                getdockertags()
+                return getdockertags()
                 '''
         )
-  choice choices: getdockertags(), description: '', name: 'test'
 
 }
 
