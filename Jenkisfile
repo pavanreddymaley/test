@@ -16,8 +16,9 @@ parameters {
             description: 'tag name',
             type: 'PT_SINGLE_SELECT',
             groovyScript: '''
-                def foo = getdockertags()
-                return "foo"
+                import groovy.json.JsonSlurper
+                return getdockertags()
+                
                 '''
         )
 
