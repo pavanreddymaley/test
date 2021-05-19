@@ -17,7 +17,7 @@ parameters {
             defaultValue: '',
             description: 'tag name',
             type: 'PT_SINGLE_SELECT',
-            groovyScript: '''return tagvalues'''
+            groovyScript: '''return tagvalues()'''
         )
 }
 
