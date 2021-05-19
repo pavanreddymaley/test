@@ -31,7 +31,7 @@ parameters {
     stage('parameterBuild') {
       steps {
         script {
-          def values = getdockertags()
+          sh 'echo demo'
         }
       }
     }
