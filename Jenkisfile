@@ -1,4 +1,6 @@
-@Library('demo') _
+libraries {
+  lib('demo')
+}
 
 def tagvalues = getdockertags()
 
